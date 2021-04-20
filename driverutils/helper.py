@@ -1,4 +1,3 @@
-import typing
 from abc import ABCMeta, abstractmethod
 
 from selenium import webdriver
@@ -9,10 +8,10 @@ from urllib3.util import timeout as _timeout
 class OptionInterface(metaclass=ABCMeta):
 
     def __init__(self):
-        self._options = self.init_options()
+        self._options = self.__init_options()
 
     @abstractmethod
-    def init_options(self):
+    def __init_options(self):
         pass
 
     @property
@@ -42,7 +41,7 @@ class IeOptions(OptionInterface):
         print("설정 -> 인터넷 옵션 -> 보안 탭의 4가지 영역 모두 보호 모드 사용 체크 확인")
         print("설정 -> 확대/축소 -> 100% 설정 확인")
 
-    def init_options(self):
+    def __init_options(self):
         options = webdriver.IeOptions()
         options.ignore_zoom_level = True
         options.ignore_protected_mode_settings = True
@@ -63,7 +62,7 @@ class ChromeOptions(OptionInterface):
         super().__init__()
         RemoteConnection.set_timeout(_timeout.Timeout(total=30))
 
-    def init_options(self):
+    def __init_options(self):
         options = webdriver.ChromeOptions()
         options.add_argument('--disable-blink-features=AutomationControlled')
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
@@ -82,7 +81,7 @@ class ChromeOptions(OptionInterface):
 
 class FirefoxOptions(OptionInterface):
 
-    def init_options(self):
+    def __init_options(self):
         options = webdriver.FirefoxOptions()
         profile = webdriver.FirefoxProfile()
         options.profile = profile
